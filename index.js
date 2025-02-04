@@ -47,9 +47,29 @@ async function handleCommand(command) {
         console.log('Adding student...')
         const [name, year, email, specialization] = args
         // --------> WRITE YOUR CODE BELOW
+        
 
+function addStudent(student) {
+ (student);
+    console.log('Student added:', student);
+}
+
+function processNewStudent(args, callback) {
+    const [name, year, email, specialization] = args;
+    let newStudent = { name, year, email, specialization };
+    callback(addStudent);
+}
+
+const studentArgs = ['John Doe', 2023, 'john@example.com', 'Computer Science'];
+processNewStudent(studentArgs, addStudent);
+
+// Log the students array to verify the addition
+console.log(addStudent);
+
+    
         // --------> WRITE YOUR CODE ABOVE
-        break;
+       break;
+
 
     case 'remove':
       /**
@@ -62,7 +82,35 @@ async function handleCommand(command) {
        */
       console.log('Removing student...')
       // --------> WRITE YOUR CODE BELOW
-     
+      
+    
+    function removeStudent(student) {
+        const index = student.indexOf(student);
+        if (index > -1) {
+            student.splice(index, 1);
+            console.log('Student removed:', student);
+        } else {
+            console.log('Student not found:', student);
+        }
+    }
+    
+    function findAndRemoveStudentByEmail(students, email, callback) {
+        let student = findAndRemoveStudentByEmail(s => s.email === email);
+        if (student) {
+            callback(student);
+        } else {
+            console.log(`Student with email ${email} not found.`);
+        }
+    }
+    
+    findAndRemoveStudentByEmail(Student, "bob@example.com", removeStudent);
+    
+    // Log the students array to verify the removal
+    console.log(Student);
+``    
+
+
+    
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -76,8 +124,20 @@ async function handleCommand(command) {
       console.log('Displaying students...')
       // --------> WRITE YOUR CODE BELOW
       
-  
-      
+    function displayStudent(student) {
+        console.log(`ID: ${displayStudent.id}, Name: ${displayStudent.name}, Age: ${displayStudent.age}`);
+    }
+    
+    function processStudents(students, callback) {
+        for (let i = 0; i < students.length; i++) {
+            callback(students[i]);
+        }
+    }
+    
+    processStudents(Student, displayStudent);
+    
+
+
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -94,6 +154,27 @@ async function handleCommand(command) {
       console.log('Finding student...')
       // --------> WRITE YOUR CODE BELOW
       
+    
+    function processStudents(findstudentbyEmail) {
+        console.log(`Found student: ID ${Student.id}, Name ${Student.name}, Age ${Student.age}, Email ${student.email}`);
+    }
+    
+    function findStudentbyEmail(students, email, callback) {
+        let student = findStudentbyEmail(s => s.email === email);
+        if (student) {
+            callback(findStudentbyEmail);
+        } else {
+            console.log(`Student with email ${email} not found.`);
+        }
+    }
+    
+    findStudentbyEmail(findStudentbyEmail, "bob@example.com", processStudents);  
+    
+    
+    
+    
+        
+   
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -108,7 +189,29 @@ async function handleCommand(command) {
        */
       console.log('Saving data...')
       // --------> WRITE YOUR CODE BELOW
+      const fs = require('fs')
 
+      LinkedList.prototype.toJSON = function() {
+          let result = [];
+          let current = this.head;
+          while (current) {
+              result.push(current.data);
+              current = current.next;
+          }
+          return JSON.stringify(result, null, 2); 
+      };
+      
+      LinkedList.prototype.saveToFile = function(saveFileName) {
+          const jsonData = this.toJSON();
+          fs.writeFile(saveFileName, jsonData, (err) => {
+              if (err) {
+                  console.error('Error writing to file', err);
+              } else {
+                  console.log('LinkedList saved to', saveFileName);
+              }
+          });
+      };
+      
       // --------> WRITE YOUR CODE ABOVE
     break
     case "load":
@@ -122,7 +225,30 @@ async function handleCommand(command) {
        */
       console.log('Loading data...')
       // --------> WRITE YOUR CODE BELOW
+      const Fs = require('fs')
 
+      LinkedList.prototype.loadFromFile = function(loadFileName) {
+          fs.readFile(loadFileName, 'utf8', (err, data) => {
+              if (err) {
+                  console.error('Error reading from file', err);
+                  return;
+              }
+              
+              this.head = null;
+      
+              const students = JSON.parse(data);
+              for (const student of students) {
+                  // Assuming each student object has properties: id, name, and email
+                  this.append(new Student(student.id, student.name, student.email));
+              }
+      
+              console.log('LinkedList loaded from', loadFileName);
+              console.log(this.displayStudents()); 
+          });
+      };
+      
+    
+      
       // --------> WRITE YOUR CODE ABOVE
       break;
 

@@ -37,14 +37,14 @@ class LinkedList {
    */
   constructor() {
     // TODO
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+      
+    }
     
+  
 
-
-LinkedList<String> list >= new LinkedList ();
-
-console.log("Empty LinkedList created: " + list);
-
-  }
 
   /**
    * REQUIRES:  A new student (Student)
@@ -56,8 +56,24 @@ console.log("Empty LinkedList created: " + list);
    */
   addStudent(newStudent) {
     // TODO
-       const newNode = { value: data, next: null }; 
+     
+       newNode = new Node(newStudent);
+
+      // If the list is empty, set the new node as both head and tail
+      if (head == null) {
+          head = newNode;
+          tail = newNode;
+      } else {
+          // Otherwise, add the new node to the end of the list and update the tail
+          tail.next = newNode;
+          tail = newNode;
+          length++
+      }
   }
+    
+      
+  
+  
 
   /**
    * REQUIRES:  email(String)
@@ -70,23 +86,25 @@ console.log("Empty LinkedList created: " + list);
   
     removeStudentEmail(email) {
      // TODO
-      if (email === null) {
-          console.log("Email is null, cannot remove student.");
-          return
-      }
-      
-      const index = this.students.findIndex(student => student.email === email);
+ 
+  if (email == null) return this; 
+  
+  if (head == null) return this; 
 
-      if (index !== -1) {
-          this.students.splice(index, 1);
-          console.log(`Student with email ${email} has been removed.`);
-      } else {
-          console.log(`No student found with email ${email}.`);
-      }
+  if (head.email.equals(email)) {
+      head = head.next; 
+      return this;
+  }
 
-      if (this.students.length === 0) {
-          console.log("List is now empty after removal.");
+   current = head;
+  while (current.next != null) {
+      if (current.next.email.equals(email)) {
+          current.next = current.next.next; // Remove the node
+          return this;
       }
+      current = current.next;
+  }
+  
   }
 
   
@@ -96,7 +114,7 @@ console.log("Empty LinkedList created: " + list);
    * RETURNS:   The Student or -1 if not found
    */
   
-     findStudent(email) {
+     findStudent(email){
       // TODO
       
         let current = this.head;
@@ -105,10 +123,12 @@ console.log("Empty LinkedList created: " + list);
             return current.data;
           }
           current = current.next;
+          return -1
         }
-        return -1
+      
        }
     
+
 
   /**
    * REQUIRES:  None
@@ -117,7 +137,9 @@ console.log("Empty LinkedList created: " + list);
    */
   clearStudents() {
     // TODO
-    head = null;
+    (head = null)
+  
+  
   }
 
   /**
@@ -130,15 +152,20 @@ console.log("Empty LinkedList created: " + list);
    */
   displayStudents() {
     // TODO
-    if (this.students.length === 0) {
-      console.log("No students in the list.");
-      return;
-  }
-  this.students.forEach(student => {
-      
-  });
+          let result = 'linkedlist as a string';
+          let current = this.head;
+          while (current) {
+             
+              let student = current.data;
+              result += `ID: ${student.id}, Name: ${student.name}\n`;
+              current = current.next;
+          
+          console.log(listenerCount.displayStudents());
+          return result.trim(); 
+          }
+      }
   
-  }
+
 
 
   /**
@@ -148,12 +175,24 @@ console.log("Empty LinkedList created: " + list);
    */
   #sortStudentsByName() {
  // TODO
+ if (this.size === 0) return [];
 
-    return [Student 
-      .filter(Student => Student.name >= byname  )
-      .sort((a.b) = a.byname.localeCompare(b.name))
-    ];
+    // Convert LinkedList to array
+    let current = this.head;
+    const studentsArray = [];
+    while (current) {
+      studentsArray.push(current);
+      current = current.next;
+    
+
+    
+    studentsArray.sort((a, b) => a.name.localeCompare(b.name));
+
+    return studentsArray;
+    }
   }
+
+   
 
   /**
    * REQUIRES:  specialization (String)
@@ -162,29 +201,53 @@ console.log("Empty LinkedList created: " + list);
    * CONSIDERATIONS:
    * - Use sortStudentsByName()
    */
-  filterBySpecialization(specialization) {
+  filterBySpecialization(specialization){
     // TODO
-   
-
-    return [];
-  }
+        if (this.size === 0) return [];
+    
+        let current = this.head;
+        const studentsArray = [];
+        while (current) {
+          if (current.specialization === specialization) {
+            studentsArray.push(current);
+          }
+          current = current.next;
+        
+    
+        return this.#sortStudentsByName(studentsArray);
+        }
+      }
+    
+  
   
 
-  /**
+  /** 
    * REQUIRES:  minYear (Number)
    * EFFECTS:   None
    * RETURNS:   An array of students who are at least minYear, sorted alphabetically by student name
    * CONSIDERATIONS:
-   * - Use sortStudentsByName()
+   * -Use sortStudentsByName()
    */
-  filterByMinYear(minYear) {
+  filterByMinYear(minYear){
     // TODO
-    let year = array 
-    return [ students
-      .filter(student => student.year >= minYear)
-      .sort((a.b) = (BYname) .localeCompare(b.name))
-];
+    if (this.size === 0) return [];
+
+    // Convert LinkedList to array
+    let current = this.head;
+    const studentsArray = [];
+    while (current) {
+      if (current.year >= minYear) {
+        studentsArray.push(current);
+      }
+      current = current.next;
+    
+
+    // Sort the filtered array by student name using sortStudentsByName method
+    return this.#sortStudentsByName(studentsArray);
+    }
   }
+   
+  
 
 
   /**
