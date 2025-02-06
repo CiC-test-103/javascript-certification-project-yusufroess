@@ -94,10 +94,10 @@ console.log(addStudent);
         }
     }
     
-    function findAndRemoveStudentByEmail(students, email, callback) {
-        let student = findAndRemoveStudentByEmail(s => s.email === email);
-        if (student) {
-            callback(student);
+    function findAndRemoveStudentByEmail( email, callback) {
+        
+        if (Student) {
+            (Student);
         } else {
             console.log(`Student with email ${email} not found.`);
         }
@@ -156,13 +156,13 @@ console.log(addStudent);
       
     
     function processStudents(findstudentbyEmail) {
-        console.log(`Found student: ID ${Student.id}, Name ${Student.name}, Age ${Student.age}, Email ${student.email}`);
+        console.log(`Found student: ID ${Student.id}, Name ${Student.name}, Age ${Student.age}, Email ${Student.email}`);
     }
     
-    function findStudentbyEmail(students, email, callback) {
-        let student = findStudentbyEmail(s => s.email === email);
-        if (student) {
-            callback(findStudentbyEmail);
+    function findStudentbyEmail( email, callback) {
+        
+        if (Student) {
+            (findStudentbyEmail);
         } else {
             console.log(`Student with email ${email} not found.`);
         }
@@ -189,29 +189,28 @@ console.log(addStudent);
        */
       console.log('Saving data...')
       // --------> WRITE YOUR CODE BELOW
-      const fs = require('fs')
+      const fs = require('fs');
 
-      LinkedList.prototype.toJSON = function() {
-          let result = [];
-          let current = this.head;
-          while (current) {
-              result.push(current.data);
-              current = current.next;
-          }
-          return JSON.stringify(result, null, 2); 
-      };
+// Function to convert LinkedList to array (Assuming this function exists in LinkedList)
+function toArray(linkedList) {
+    const nodeArray = [];
+    let currentNode = linkedList.head;
+    while (currentNode) {
+        nodeArray.push(currentNode.data);
+        currentNode = currentNode.next;
+    }
+    return nodeArray;
+}
+
+// Function to save LinkedList to JSON file
+function saveLinkedListToJson(linkedList, saveFileName) {
+    const nodeArray = toArray(linkedList);
+    fs.writeFileSync(saveFileName, JSON.stringify(nodeArray, null, 2), 'utf-8');
+}
+
+
       
-      LinkedList.prototype.saveToFile = function(saveFileName) {
-          const jsonData = this.toJSON();
-          fs.writeFile(saveFileName, jsonData, (err) => {
-              if (err) {
-                  console.error('Error writing to file', err);
-              } else {
-                  console.log('LinkedList saved to', saveFileName);
-              }
-          });
-      };
-      
+    
       // --------> WRITE YOUR CODE ABOVE
     break
     case "load":
@@ -225,30 +224,16 @@ console.log(addStudent);
        */
       console.log('Loading data...')
       // --------> WRITE YOUR CODE BELOW
-      const Fs = require('fs')
+      
 
-      LinkedList.prototype.loadFromFile = function(loadFileName) {
-          fs.readFile(loadFileName, 'utf8', (err, data) => {
-              if (err) {
-                  console.error('Error reading from file', err);
-                  return;
-              }
-              
-              this.head = null;
-      
-              const students = JSON.parse(data);
-              for (const student of students) {
-                  // Assuming each student object has properties: id, name, and email
-                  this.append(new Student(student.id, student.name, student.email));
-              }
-      
-              console.log('LinkedList loaded from', loadFileName);
-              console.log(this.displayStudents()); 
-          });
-      };
-      
-    
-      
+// Function to convert JSON data to LinkedList
+function loadFromJson(linkedList, fileName) {
+    const data = fs.readFileSync(fileName, 'utf-8');
+    const nodeArray = JSON.parse(data);
+    nodeArray.forEach(data => linkedList.append(data));
+}
+
+
       // --------> WRITE YOUR CODE ABOVE
       break;
 

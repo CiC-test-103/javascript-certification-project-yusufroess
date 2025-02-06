@@ -57,24 +57,20 @@ class LinkedList {
   addStudent(newStudent) {
     // TODO
      
-       newNode = new Node(newStudent);
-
-      // If the list is empty, set the new node as both head and tail
-      if (head == null) {
-          head = newNode;
-          tail = newNode;
-      } else {
-          // Otherwise, add the new node to the end of the list and update the tail
-          tail.next = newNode;
-          tail = newNode;
-          length++
-      }
-  }
+        if (newStudent == null) {
+            return; // Handle the null case
+        }
     
-      
-  
-  
-
+        if (this.tail == null) { // If the list is empty
+            this.head = newStudent;
+            this.tail = newStudent;
+        } else {
+            this.tail.next = newStudent; // Assuming 'next' is a field in Student that points to the next student
+            this.tail = newStudent;
+        }
+    
+    
+  }
   /**
    * REQUIRES:  email(String)
    * EFFECTS:   Removes a student by email (assume unique)
@@ -85,29 +81,39 @@ class LinkedList {
    */
   
     removeStudentEmail(email) {
-     // TODO
- 
-  if (email == null) return this; 
-  
-  if (head == null) return this; 
+    
+        //if statement checks if the list is empty by seeing if this.head is null. If the list is empty,
+        //  the function returns null.
+          if (!this.head) {
+            return null;
+          }
+          //if statement checks if the email of the student to be removed matches the email of the student at the head of
+           //the list (this.head.student.email). If true,
+          // it removes the head by updating this.head to point to the next node in the list. Then, the function returns.
+          // If the student to be removed is the head
+          if (this.head.student.email === studentEmail) {
+            this.head = this.head.next;
+            return;
+          }
+      //while loop traverses the list. It iterates through each node to find the student with the matching email.
+      //  The loop continues as long as the next node (current.next) exists and the email of the next student
+      //  (current.next.student.email) does not match the given studentEmail.
+          let current = this.head;
+          while (current.next && current.next.student.email !== studentEmail) {
+            current = current.next;
+          }
+      //after while loop, an if statement checks if the next node (current.next) is null.
+      //  If it is null, the student with the given email was not found, and the function returns null.
+          // If the student was not found
+          if (!current.next) {
+            return null;
+          }
+      
+          // Remove the student
+          current.next = current.next.next;
+        }
+      
 
-  if (head.email.equals(email)) {
-      head = head.next; 
-      return this;
-  }
-
-   current = head;
-  while (current.next != null) {
-      if (current.next.email.equals(email)) {
-          current.next = current.next.next; // Remove the node
-          return this;
-      }
-      current = current.next;
-  }
-  
-  }
-
-  
   /**
    * REQUIRES:  email (String)
    * EFFECTS:   None
@@ -116,19 +122,32 @@ class LinkedList {
   
      findStudent(email){
       // TODO
-      
-        let current = this.head;
-        while (current !== null) {
-          if (current.data.email === email) {
-            return current.data;
-          }
-          current = current.next;
-          return -1
-        }
-      
-       }
-    
+     
+function getString() {
+  // This should be implemented to return the list of student strings
+  // Example: returning JSON strings
+  return [
+      '{"name": "John Doe", "email": "john.doe@example.com"}',
+      '{"name": "Jane Doe", "email": "jane.doe@example.com"}'
+  ];
+}
 
+// Function to find a student by their email
+
+  let studentStringList = getString();
+  
+  for (const studentString of studentStringList) {
+      const student = JSON.parse(studentString);
+      if (student.email === email) {
+          return student;
+      }
+  
+  
+  return -1;
+    }
+
+    }
+      
 
   /**
    * REQUIRES:  None
@@ -150,24 +169,48 @@ class LinkedList {
    *  - Let's assume you have a LinkedList with two people
    *  - Output should appear as: "JohnDoe, JaneDoe"
    */
-  displayStudents() {
+ displayStudents() {
     // TODO
-          let result = 'linkedlist as a string';
-          let current = this.head;
-          while (current) {
-             
-              let student = current.data;
-              result += `ID: ${student.id}, Name: ${student.name}\n`;
-              current = current.next;
-          
-          console.log(listenerCount.displayStudents());
-          return result.trim(); 
-          }
+    let result = "";
+///initializing an empty string result which will hold the concatenated names.
+    if (this.head) {
+      
+      const nodes = [];
+      let current = this.head;
+      while (current) {
+        nodes.push(current);
+        current = current.next;
       }
-  
+      //check if this.head is not null or undefined to ensure there’s
+       // a linked list to process. We then convert the linked list to an array for easier manipulation using a while loop.
+      result = nodes.reduce((acc, node) => {
+        if (node.data && typeof node.data.getName === 'function') {
+          let student = node.data.getName();
+          acc += `${student}, `;
+        } else {
+          console.log("Error: getName method is not available on node.data", node);
+        }
+        return acc;
+      }, "");
+    //reduce method on the nodes array to iterate over each node and accumulate the names into the result string.
+    //  If getName is available on node.data, we append the name to the accumulator acc, followed by a comma and space.
+    //  If not, we log an error to the console.
 
+      // Remove the trailing comma and space
+      if (result.length > 0) {
+        result = result.slice(0, -2);
+      }
+    }
+    //After accumulating the names, 
+    //we check if result has any content. If it does, we remove the trailing comma and space using slice.
+    // Print and return the result
+    console.log(result);
+    return result;
+    
+    
 
-
+  }
+          
   /**
    * REQUIRES:  None
    * EFFECTS:   None
@@ -175,21 +218,25 @@ class LinkedList {
    */
   #sortStudentsByName() {
  // TODO
- if (this.size === 0) return [];
+  if (this.size === 0) return [];
+  //If the linked list is empty, we return an empty array immediately.
 
-    // Convert LinkedList to array
-    let current = this.head;
-    const studentsArray = [];
-    while (current) {
-      studentsArray.push(current);
-      current = current.next;
-    
+  // Convert LinkedList to array
+  let current = this.head;
+  const studentsArray = [];
+  while (current) {
+    studentsArray.push(current.data);
+    current = current.next;
+  }
+  //traverse the linked list and push the data of each node into the studentsArray.
 
-    
-    studentsArray.sort((a, b) => a.name.localeCompare(b.name));
 
-    return studentsArray;
-    }
+  // Sort the array by student names
+  studentsArray.sort((a, b) => a.getName().localeCompare(b.getName()));
+  //use the sort method with localeCompare to sort the students by their names.
+  return studentsArray;
+
+
   }
 
    
@@ -203,20 +250,25 @@ class LinkedList {
    */
   filterBySpecialization(specialization){
     // TODO
-        if (this.size === 0) return [];
-    
-        let current = this.head;
-        const studentsArray = [];
-        while (current) {
-          if (current.specialization === specialization) {
-            studentsArray.push(current);
-          }
-          current = current.next;
-        
-    
-        return this.#sortStudentsByName(studentsArray);
-        }
-      }
+  
+  // Filter the students by the given specialization
+  const filteredStudents = (student => student.specialization === specialization);
+//first need to filter the students array based on the given specialization.
+//  Make sure this.students contains your list of student objects.
+
+  // Sort the filtered students by name
+  const sortedStudents = this.#sortStudentsByName(filteredStudents);
+//After filtering, sort the filtered array using the helper function #sortStudentsByName.
+  // Return the sorted array
+  return sortedStudents;
+
+  }
+// Helper function to sort students by name
+sortStudentsByName(Student) {
+  return Student.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+  
     
   
   
@@ -231,19 +283,26 @@ class LinkedList {
   filterByMinYear(minYear){
     // TODO
     if (this.size === 0) return [];
+// the size of the LinkedList is zero, it returns an empty array because there are no students to filter.
 
     // Convert LinkedList to array
     let current = this.head;
+    //initializes current to point to the head of the LinkedList and creates an empty array
+      // studentsArray to store the filtered students.
+
     const studentsArray = [];
     while (current) {
       if (current.year >= minYear) {
         studentsArray.push(current);
       }
       current = current.next;
-    
+      // loop traverses through each node of the LinkedList. If the year property of the current student is greater than or equal to minYear,
+       //it adds the student to studentsArray. Then, it moves the current pointer to the next node in the LinkedList.
 
-    // Sort the filtered array by student name using sortStudentsByName method
+    // Sort the filtered array by student name using #sortStudentsByName method
     return this.#sortStudentsByName(studentsArray);
+   // After filtering, it calls a method #sortStudentsByName to sort the array studentsArray
+    // by student name and returns the sorted array.
     }
   }
    
@@ -263,7 +322,7 @@ class LinkedList {
     await fs.writeFile(fileName, json);
     console.log('LinkedList successfully written to', fileName);
   } catch (error) {
-    console.error('Error writing LinkedList to file:', error);
+    console.log('Error writing LinkedList to file:', error);
   }
 
   }
@@ -284,14 +343,14 @@ class LinkedList {
         const parsedData = JSON.parse(data);
     
         // Clear the existing linked list
-        clearStudents(linkedList);
+        clearStudents(LinkedList);
     
         // Populate the linked list with the new data
-        parsedData.forEach(item => linkedList.add(item));
+        parsedData.forEach(item => LinkedList.add(item));
     
         console.log('Data successfully loaded from', fileName);
       } catch (error) {
-        console.error('Error loading data from file:', error);
+        console.log('Error loading data from file:', error);
       
     }
     
