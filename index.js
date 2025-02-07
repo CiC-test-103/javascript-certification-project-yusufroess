@@ -47,26 +47,9 @@ async function handleCommand(command) {
         console.log('Adding student...')
         const [name, year, email, specialization] = args
         // --------> WRITE YOUR CODE BELOW
-        
+        studentManagementSystem.addStudent([name, year, email, specialization])
+       
 
-function addStudent(student) {
- (student);
-    console.log('Student added:', student);
-}
-
-function processNewStudent(args, callback) {
-    const [name, year, email, specialization] = args;
-    let newStudent = { name, year, email, specialization };
-    callback(addStudent);
-}
-
-const studentArgs = ['John Doe', 2023, 'john@example.com', 'Computer Science'];
-processNewStudent(studentArgs, addStudent);
-
-// Log the students array to verify the addition
-console.log(addStudent);
-
-    
         // --------> WRITE YOUR CODE ABOVE
        break;
 
@@ -82,35 +65,9 @@ console.log(addStudent);
        */
       console.log('Removing student...')
       // --------> WRITE YOUR CODE BELOW
+      const emailToRemove = args[0];
+      studentManagementSystem.remove(emailToRemove);
       
-    
-    function removeStudent(student) {
-        const index = student.indexOf(student);
-        if (index > -1) {
-            student.splice(index, 1);
-            console.log('Student removed:', student);
-        } else {
-            console.log('Student not found:', student);
-        }
-    }
-    
-    function findAndRemoveStudentByEmail( email, callback) {
-        
-        if (Student) {
-            (Student);
-        } else {
-            console.log(`Student with email ${email} not found.`);
-        }
-    }
-    
-    findAndRemoveStudentByEmail(Student, "bob@example.com", removeStudent);
-    
-    // Log the students array to verify the removal
-    console.log(Student);
-``    
-
-
-    
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -123,21 +80,8 @@ console.log(addStudent);
        */
       console.log('Displaying students...')
       // --------> WRITE YOUR CODE BELOW
-      
-    function displayStudent(student) {
-        console.log(`ID: ${displayStudent.id}, Name: ${displayStudent.name}, Age: ${displayStudent.age}`);
-    }
+      studentManagementSystem.display();
     
-    function processStudents(students, callback) {
-        for (let i = 0; i < students.length; i++) {
-            callback(students[i]);
-        }
-    }
-    
-    processStudents(Student, displayStudent);
-    
-
-
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -153,28 +97,14 @@ console.log(addStudent);
        */
       console.log('Finding student...')
       // --------> WRITE YOUR CODE BELOW
-      
-    
-    function processStudents(findstudentbyEmail) {
-        console.log(`Found student: ID ${Student.id}, Name ${Student.name}, Age ${Student.age}, Email ${Student.email}`);
-    }
-    
-    function findStudentbyEmail( email, callback) {
-        
-        if (Student) {
-            (findStudentbyEmail);
-        } else {
-            console.log(`Student with email ${email} not found.`);
-        }
-    }
-    
-    findStudentbyEmail(findStudentbyEmail, "bob@example.com", processStudents);  
-    
-    
-    
-    
-        
-   
+      const emailToFind = args[0];
+      const foundStudent = studentManagementSystem.find(emailToFind);
+
+      if (foundStudent) {
+          console.log(foundStudent.getString());
+      } else {
+          console.log('Student does not exist');
+      }
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -189,28 +119,8 @@ console.log(addStudent);
        */
       console.log('Saving data...')
       // --------> WRITE YOUR CODE BELOW
-      const fs = require('fs');
-
-// Function to convert LinkedList to array (Assuming this function exists in LinkedList)
-function toArray(linkedList) {
-    const nodeArray = [];
-    let currentNode = linkedList.head;
-    while (currentNode) {
-        nodeArray.push(currentNode.data);
-        currentNode = currentNode.next;
-    }
-    return nodeArray;
-}
-
-// Function to save LinkedList to JSON file
-function saveLinkedListToJson(linkedList, saveFileName) {
-    const nodeArray = toArray(linkedList);
-    fs.writeFileSync(saveFileName, JSON.stringify(nodeArray, null, 2), 'utf-8');
-}
-
-
-      
-    
+      const saveFileName = args[0];
+      studentManagementSystem.saveToFile(saveFileName);
       // --------> WRITE YOUR CODE ABOVE
     break
     case "load":
@@ -224,14 +134,10 @@ function saveLinkedListToJson(linkedList, saveFileName) {
        */
       console.log('Loading data...')
       // --------> WRITE YOUR CODE BELOW
-      
-
-// Function to convert JSON data to LinkedList
-function loadFromJson(linkedList, fileName) {
-    const data = fs.readFileSync(fileName, 'utf-8');
-    const nodeArray = JSON.parse(data);
-    nodeArray.forEach(data => linkedList.append(data));
-}
+      const loadFileName = args[0];
+      studentManagementSystem.loadFromFile(loadFileName);
+      console.log('Displaying updated students...');
+      studentManagementSystem.display();
 
 
       // --------> WRITE YOUR CODE ABOVE
@@ -247,7 +153,9 @@ function loadFromJson(linkedList, fileName) {
        */
       console.log('Clearing data...')
       // --------> WRITE YOUR CODE BELOW
-      head = null;
+      studentManagementSystem.clear();
+            console.log('Displaying students after clearing...');
+            studentManagementSystem.display();
       // --------> WRITE YOUR CODE ABOVE
       break;
 
