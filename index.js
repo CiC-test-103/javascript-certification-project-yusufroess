@@ -101,7 +101,7 @@ async function handleCommand(command) {
       const foundStudent = studentManagementSystem.find(emailToFind);
 
       if (foundStudent) {
-          console.log(foundStudent.getString());
+        console.log(x.findStudent("isaiah@gmail.com").getName())
       } else {
           console.log('Student does not exist');
       }
