@@ -120,8 +120,9 @@ async function handleCommand(command) {
        */
       console.log('Saving data...')
       // --------> WRITE YOUR CODE BELOW
-      const saveFileName = args[0];
-        studentManagementSystem.saveToJson(saveFileName);
+      const saveFileName = args[0]; // This can be undefined if not provided
+      console.log(`File name provided: ${saveFileName}`); // Debug statement
+      studentManagementSystem.saveToJson(saveFileName);
       // --------> WRITE YOUR CODE ABOVE
     break
     case "load":

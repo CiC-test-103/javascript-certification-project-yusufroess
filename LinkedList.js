@@ -290,25 +290,27 @@ return result;
    */
   
   async saveToJson(fileName) {
+    console.log(`saveToJson called with fileName: ${fileName}`); // Debug statement
     // TODO
     try {
       const studentsArray = [];
       let current = this.head;
       while (current) {
-          studentsArray.push({
-              name: current.data.getName(),
-              year: current.data.getYear(),
-              email: current.data.getEmail(),
-              specialization: current.data.getSpecialization()
-          });
-          current = current.next;
+        studentsArray.push({
+          name: current.data.getName(),
+          year: current.data.getYear(),
+          email: current.data.getEmail(),
+          specialization: current.data.getSpecialization()
+        });
+        current = current.next;
       }
-      const json = JSON.stringify({ students: studentsArray });
+      const json = JSON.stringify(studentsArray, null, 2);
+      console.log('Saving JSON:', json);  // Debug statement
       await fs.writeFile(fileName, json);
       console.log('LinkedList successfully written to', fileName);
-  } catch (error) {
+    } catch (error) {
       console.log('Error writing LinkedList to file:', error);
-  }
+    }
   }
 
   /**
@@ -324,34 +326,34 @@ return result;
     try {
       const data = await fs.readFile(fileName, 'utf8');
       const parsedData = JSON.parse(data);
-
+      console.log('Loading JSON:', parsedData);  // Debug statement
       this.clearStudents();
-
-      parsedData.students.forEach(item => {
-          const student = new Student(item.name, item.year, item.email, item.specialization);
-          this.addStudent(student);
+      parsedData.forEach(item => {
+        const student = new Student(item.name, item.year, item.email, item.specialization);
+        this.addStudent(student);
       });
-
       console.log('Data successfully loaded from', fileName);
-  } catch (error) {
+    } catch (error) {
       console.log('Error loading data from file:', error);
+    }
+  
   }
-
-  }
-
+ 
 }
 
 module.exports = { LinkedList }
 
-// let x = new LinkedList();
+ //let x = new LinkedList();
 
-// let studentA = new Student("John", 2, "john@gmail.com", "computerScience");
+ //let studentA = new Student("John", 2, "john@gmail.com", "computerScience");
 // let studentB = new Student("Jane", 3, "jane@gmail.com", "Math");
-// let studentC = new Student("Isaiah", 2, "isaiah@gmail.com", "computerScience");
+ //let studentC = new Student("Isaiah", 2, "isaiah@gmail.com", "computerScience");
 
 // x.addStudent(studentA);
-// x.addStudent(studentB);
-// x.addStudent(studentC);
-// // console.log(x.displayStudents())
+ //x.addStudent(studentB);
+ // x.addStudent(studentC); 
+  //console.log(x.displayStudents())
 
 // console.log(x.findStudent("isaiah@gmail.com").getName())
+
+//x.saveToJson("data.json")

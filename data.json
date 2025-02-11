@@ -1,1 +1,8 @@
-{"students":[{"year":null}]}
+[
+  {
+    "name": "shaakir",
+    "year": 2,
+    "email": "shaakir@gmail.com",
+    "specialization": ""
+  }
+]
